@@ -1,0 +1,22 @@
+FROM hashicorp/terraform:1.5.0
+
+RUN apk add --no-cache \
+    curl \
+    bash \
+    python3 \
+    py3-pip \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    make \
+    linux-headers \
+    python3-dev
+
+# Install Azure CLI
+RUN pip3 install azure-cli
+
+ADD ./scripts /app
+ADD ./terraform /app
+ADD ./terraform-k8s /app/terraform-k8s
+WORKDIR /app

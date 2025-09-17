@@ -1,0 +1,43 @@
+services:
+  update:
+    image: test-azure-blueprints-instant3dhub
+    network_mode: host
+    working_dir: /app
+    environment:
+      - TF_HTTP_USERNAME=${GITLAB_USERNAME}
+      - TF_HTTP_PASSWORD=${GITLAB_TOKEN}
+      - ARM_CLIENT_ID=${ARM_CLIENT_ID}
+      - ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}
+      - ARM_TENANT_ID=${ARM_TENANT_ID}
+      - ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}
+      - OAUTH2_CLIENT_ID=${OAUTH2_CLIENT_ID}
+      - OAUTH2_CLIENT_SECRET=${OAUTH2_CLIENT_SECRET}
+      - OAUTH2_PROXY_COOKIE_SECRET=${OAUTH2_PROXY_COOKIE_SECRET}
+      - INSTANT3DHUB_LICENSE_KEY=${INSTANT3DHUB_LICENSE_KEY}
+    entrypoint: ["sh", "-c"]
+    command: [
+      "sh updatePlaceholders.sh && \
+      terraform init && terraform apply -auto-approve"
+    ]
+  destroy:
+    image: test-azure-blueprints-instant3dhub
+    network_mode: host
+    working_dir: /app
+    environment:
+      - TF_HTTP_USERNAME=${GITLAB_USERNAME}
+      - TF_HTTP_PASSWORD=${GITLAB_TOKEN}
+      - ARM_CLIENT_ID=${ARM_CLIENT_ID}
+      - ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}
+      - ARM_TENANT_ID=${ARM_TENANT_ID}
+      - ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}
+      - OAUTH2_CLIENT_ID=${OAUTH2_CLIENT_ID}
+      - OAUTH2_CLIENT_SECRET=${OAUTH2_CLIENT_SECRET}
+      - OAUTH2_PROXY_COOKIE_SECRET=${OAUTH2_PROXY_COOKIE_SECRET}
+      - INSTANT3DHUB_LICENSE_KEY=${INSTANT3DHUB_LICENSE_KEY}
+    entrypoint: ["sh", "-c"]
+    command: [
+      "sh updatePlaceholders.sh && \
+      terraform init && terraform apply -var=\"runTerraformK8s=false\" -auto-approve && \
+      cd terraform-k8s && terraform init && terraform destroy -auto-approve && \
+      cd .. && terraform destroy -auto-approve"
+    ]
