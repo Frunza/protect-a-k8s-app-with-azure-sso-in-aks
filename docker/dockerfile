@@ -16,7 +16,7 @@ RUN apk add --no-cache \
 # Install Azure CLI
 RUN pip3 install azure-cli
 
-ADD ./scripts /app
-ADD ./terraform /app
-ADD ./terraform-k8s /app/terraform-k8s
+COPY ./scripts /app
+COPY ./terraform /app
+COPY ./terraform-k8s /app/terraform-k8s
 WORKDIR /app
