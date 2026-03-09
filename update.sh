@@ -4,4 +4,4 @@
 set -e
 
 docker build -t test-aks-with-testing-application-sso-update -f docker/dockerfile .
-docker-compose -f docker/docker-compose.yml run --rm update
+docker compose -f docker/docker-compose.yml run --rm update
